@@ -1,12 +1,12 @@
 import Link from "next/link"
 import Image from "next/image"
-import { Heart, Minus, Plus, Share2, ShoppingBag, Star, Truck } from "lucide-react"
+import { Heart, Minus, Plus, Share2, Star, Truck } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-export default function ProductPage({ params }) {
+export default function ProductPage({ params }: { params: { id: string } }) {
   const productId = Number.parseInt(params.id)
 
   // Mock product data
@@ -51,48 +51,6 @@ export default function ProductPage({ params }) {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Header */}
-      <header className="border-b">
-        <div className="container flex h-16 items-center justify-between px-4 md:px-6">
-          <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
-            <ShoppingBag className="h-6 w-6" />
-            <span>StyleStore</span>
-          </Link>
-          <nav className="hidden md:flex gap-6">
-            <Link href="/" className="text-sm font-medium hover:underline underline-offset-4">
-              Home
-            </Link>
-            <Link href="/products" className="text-sm font-medium hover:underline underline-offset-4">
-              Products
-            </Link>
-            <Link href="/about" className="text-sm font-medium hover:underline underline-offset-4">
-              About
-            </Link>
-            <Link href="/contact" className="text-sm font-medium hover:underline underline-offset-4">
-              Contact
-            </Link>
-          </nav>
-          <div className="flex items-center gap-4">
-            <Link href="/cart">
-              <Button variant="outline" size="icon" className="relative">
-                <ShoppingBag className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
-                  3
-                </span>
-              </Button>
-            </Link>
-            <Link href="/login" className="hidden md:block">
-              <Button variant="outline" size="sm">
-                Login
-              </Button>
-            </Link>
-            <Link href="/signup" className="hidden md:block">
-              <Button size="sm">Sign up</Button>
-            </Link>
-          </div>
-        </div>
-      </header>
-
       <main className="flex-1">
         <div className="container px-4 md:px-6 py-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
@@ -365,32 +323,6 @@ export default function ProductPage({ params }) {
           </div>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="border-t py-6 md:py-0">
-        <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row px-4 md:px-6">
-          <div className="flex flex-col items-center gap-4 md:flex-row md:gap-6">
-            <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
-              <ShoppingBag className="h-6 w-6" />
-              <span>StyleStore</span>
-            </Link>
-            <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-              &copy; {new Date().getFullYear()} StyleStore. All rights reserved.
-            </p>
-          </div>
-          <div className="flex gap-4">
-            <Link href="#" className="text-muted-foreground hover:text-foreground">
-              Terms
-            </Link>
-            <Link href="#" className="text-muted-foreground hover:text-foreground">
-              Privacy
-            </Link>
-            <Link href="#" className="text-muted-foreground hover:text-foreground">
-              Contact
-            </Link>
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }

@@ -1,6 +1,5 @@
-import Link from "next/link"
-import Image from "next/image"
-import { Filter, ShoppingBag, SlidersHorizontal } from "lucide-react"
+import Product from "@/components/product/product"
+import { Filter, SlidersHorizontal } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -29,48 +28,6 @@ export default function ProductsPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Header */}
-      <header className="border-b">
-        <div className="container flex h-16 items-center justify-between px-4 md:px-6">
-          <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
-            <ShoppingBag className="h-6 w-6" />
-            <span>StyleStore</span>
-          </Link>
-          <nav className="hidden md:flex gap-6">
-            <Link href="/" className="text-sm font-medium hover:underline underline-offset-4">
-              Home
-            </Link>
-            <Link href="/products" className="text-sm font-medium underline underline-offset-4">
-              Products
-            </Link>
-            <Link href="/about" className="text-sm font-medium hover:underline underline-offset-4">
-              About
-            </Link>
-            <Link href="/contact" className="text-sm font-medium hover:underline underline-offset-4">
-              Contact
-            </Link>
-          </nav>
-          <div className="flex items-center gap-4">
-            <Link href="/cart">
-              <Button variant="outline" size="icon" className="relative">
-                <ShoppingBag className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
-                  3
-                </span>
-              </Button>
-            </Link>
-            <Link href="/login" className="hidden md:block">
-              <Button variant="outline" size="sm">
-                Login
-              </Button>
-            </Link>
-            <Link href="/signup" className="hidden md:block">
-              <Button size="sm">Sign up</Button>
-            </Link>
-          </div>
-        </div>
-      </header>
-
       <main className="flex-1">
         <div className="container px-4 md:px-6 py-8">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
@@ -259,49 +216,13 @@ export default function ProductsPage() {
             </div>
             <div className="md:col-span-2 lg:col-span-3">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* products */}
                 {products.map((product) => (
-                  <Link href={`/products/${product.id}`} key={product.id} className="group">
-                    <div className="overflow-hidden rounded-lg border bg-background">
-                      <Image
-                        src={`/placeholder.svg?height=300&width=300&text=Product+${product.id}`}
-                        alt={product.name}
-                        width={300}
-                        height={300}
-                        className="aspect-square object-cover transition-transform group-hover:scale-105"
-                      />
-                      <div className="p-4">
-                        <h3 className="font-semibold">{product.name}</h3>
-                        <p className="text-sm text-muted-foreground">{product.description}</p>
-                        <div className="flex text-yellow-500 mt-1">
-                          {Array.from({ length: 5 }).map((_, i) => (
-                            <svg
-                              key={i}
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 24 24"
-                              fill={i < product.rating ? "currentColor" : "none"}
-                              stroke={i < product.rating ? "none" : "currentColor"}
-                              strokeWidth="2"
-                              className="w-4 h-4"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                          ))}
-                        </div>
-                        <div className="mt-2 flex items-center justify-between">
-                          <span className="font-semibold">${product.price.toFixed(2)}</span>
-                          <Button variant="outline" size="sm">
-                            Add to Cart
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
+                  <Product {...product} key={product.id} />
                 ))}
               </div>
+
+              {/* pagination */}
               <div className="flex justify-center mt-8">
                 <div className="flex items-center gap-2">
                   <Button variant="outline" size="icon" disabled>
@@ -347,32 +268,6 @@ export default function ProductsPage() {
           </div>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="border-t py-6 md:py-0">
-        <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row px-4 md:px-6">
-          <div className="flex flex-col items-center gap-4 md:flex-row md:gap-6">
-            <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
-              <ShoppingBag className="h-6 w-6" />
-              <span>StyleStore</span>
-            </Link>
-            <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-              &copy; {new Date().getFullYear()} StyleStore. All rights reserved.
-            </p>
-          </div>
-          <div className="flex gap-4">
-            <Link href="#" className="text-muted-foreground hover:text-foreground">
-              Terms
-            </Link>
-            <Link href="#" className="text-muted-foreground hover:text-foreground">
-              Privacy
-            </Link>
-            <Link href="#" className="text-muted-foreground hover:text-foreground">
-              Contact
-            </Link>
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }

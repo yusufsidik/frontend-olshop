@@ -1,11 +1,17 @@
+"use client"
+
 import Link from "next/link"
 // import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { ShoppingBag} from "lucide-react"
+import { cn } from "@/lib/utils"
+import { usePathname } from 'next/navigation'
 
 export default function Navbar() {
   return (
-    <header className="border-b">
+    <header className={cn(`border-b`, {
+      "hidden" : usePathname()?.startsWith("/admin")
+    })}>
         <div className="container flex h-16 items-center justify-between px-4 md:px-6 mx-auto">
           <Link href="/products" className="flex items-center gap-2 text-lg font-semibold">
             <ShoppingBag className="h-6 w-6" />

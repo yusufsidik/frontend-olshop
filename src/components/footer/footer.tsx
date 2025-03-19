@@ -1,11 +1,18 @@
+"use client"
 
 import Link from "next/link"
 import { ShoppingBag } from "lucide-react"
+import { cn } from "@/lib/utils";
+
+
+import { usePathname } from 'next/navigation'
 
 
 export default function Footer() {
   return (
-    <footer className="border-t py-6 md:py-0">
+    <footer className={cn(`border-t py-6 md:py-0`, {
+      "hidden" : usePathname()?.startsWith("/admin")
+    })}>
       <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row px-4 md:px-6 mx-auto">
         <div className="flex flex-col items-center gap-4 md:flex-row md:gap-6">
           <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
