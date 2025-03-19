@@ -29,7 +29,7 @@ export default function ProductsPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-1">
-        <div className="container px-4 md:px-6 py-8">
+        <div className="container px-4 md:px-6 py-8 mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
             <div>
               <h1 className="text-3xl font-bold tracking-tight">All Products</h1>

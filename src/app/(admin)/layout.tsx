@@ -54,14 +54,14 @@ export default function LayoutAdmin({children} : {children: React.ReactNode}) {
                 className="flex items-center gap-3 rounded-md bg-primary/10 px-4 py-2 text-sm font-medium text-primary"
               >
                 <LayoutDashboard className="h-4 w-4" />
-                Overview
+                -
               </Link>
               <Link
-                href="/admin/analytics"
+                href="/admin"
                 className="flex items-center gap-3 rounded-md px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
               >
                 <BarChart3 className="h-4 w-4" />
-                Analytics
+                -
               </Link>
             </div>
           </div>
@@ -71,32 +71,25 @@ export default function LayoutAdmin({children} : {children: React.ReactNode}) {
             </h2>
             <div className="space-y-1">
               <Link
-                href="/admin/products"
+                href="/admin"
                 className="flex items-center gap-3 rounded-md px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
               >
                 <Box className="h-4 w-4" />
                 Products
               </Link>
               <Link
-                href="/admin/orders"
+                href="/admin/category"
                 className="flex items-center gap-3 rounded-md px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
               >
                 <ShoppingCart className="h-4 w-4" />
-                Orders
+                Categories
               </Link>
               <Link
-                href="/admin/customers"
+                href="/admin/brand"
                 className="flex items-center gap-3 rounded-md px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
               >
                 <Users className="h-4 w-4" />
-                Customers
-              </Link>
-              <Link
-                href="/admin/transactions"
-                className="flex items-center gap-3 rounded-md px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
-              >
-                <CreditCard className="h-4 w-4" />
-                Transactions
+                Brand
               </Link>
             </div>
           </div>
@@ -108,18 +101,18 @@ export default function LayoutAdmin({children} : {children: React.ReactNode}) {
                 className="flex items-center gap-3 rounded-md px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
               >
                 <Settings className="h-4 w-4" />
-                General
+                -
               </Link>
               <Link
                 href="/"
                 className="flex items-center gap-3 rounded-md px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
               >
                 <Home className="h-4 w-4" />
-                View Store
+                -
               </Link>
               <button className="flex w-full items-center gap-3 rounded-md px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground">
                 <LogOut className="h-4 w-4" />
-                Logout
+                -
               </button>
             </div>
           </div>

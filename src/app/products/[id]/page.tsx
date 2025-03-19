@@ -5,9 +5,12 @@ import { Heart, Minus, Plus, Share2, Star, Truck } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import * as React from "react"
 
-export default function ProductPage({ params }: { params: { id: string } }) {
-  const productId = Number.parseInt(params.id)
+async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
+
+  const {id} = await params
+  const productId = Number.parseInt(id)
 
   // Mock product data
   const product = {
@@ -52,7 +55,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-1">
-        <div className="container px-4 md:px-6 py-8">
+        <div className="container px-4 md:px-6 py-8 mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
             {/* Product Images */}
             <div className="space-y-4">
@@ -326,4 +329,6 @@ export default function ProductPage({ params }: { params: { id: string } }) {
     </div>
   )
 }
+
+export default ProductPage
 
