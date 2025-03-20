@@ -27,6 +27,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
+import { BreadcrumbDemo } from "@/components/(admin)/components/breadcrumb-admin"
+
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
@@ -71,7 +73,7 @@ export default function LayoutAdmin({children} : {children: React.ReactNode}) {
             </h2>
             <div className="space-y-1">
               <Link
-                href="/admin"
+                href="/admin/product"
                 className="flex items-center gap-3 rounded-md px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
               >
                 <Box className="h-4 w-4" />
@@ -190,6 +192,7 @@ export default function LayoutAdmin({children} : {children: React.ReactNode}) {
         
         {/* Main Content */}
         <main className="overflow-auto p-4 sm:p-6">
+          <BreadcrumbDemo />
           {children}
         </main>
       </div>
