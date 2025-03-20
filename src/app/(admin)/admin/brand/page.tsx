@@ -2,17 +2,18 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 
-import { Plus } from 'lucide-react';
+import { Heading1, Plus } from 'lucide-react';
 
 import { Suspense } from "react";
 
-interface Blog {
-  id: number;
-  title: string;
-  content: string;
-  author: string; 
-  date: string;
-  category: string;
+import axios from 'axios'
+import { Tanggal } from "@/lib/tanggal";
+
+interface Brand {
+  _id: string
+  name: string
+  createdAt: string
+  updatedAt: string
 }
 
 function tanggal(date: string) {
@@ -27,32 +28,8 @@ function tanggal(date: string) {
 
 export default async function Brand() {
 
-  const data = await fetch('https://api.vercel.app/blog')
-  const blogs : Blog[] = await data.json()
-  
-
-  const brands = [
-    {
-      id: 1,
-      name: "Asus"
-    },
-    {
-      id: 2,
-      name: "Lenovo"
-    },
-    {
-      id: 3,
-      name: "Acer"
-    },
-    {
-      id: 4,
-      name: "Dell"
-    },
-    {
-      id: 5,
-      name: "Axio"
-    }
-  ]
+  const data = await axios.get('http://localhost:8000/brand')
+  const brands : Brand[] = await data.data.data
 
   return (
     <Card className="lg:col-span-4">
@@ -69,48 +46,23 @@ export default async function Brand() {
         </div>
       </CardHeader>
       <CardContent>
-        {/* <Table>
+        <Table>
           <TableHeader>
             <TableRow>
               <TableHead>No</TableHead>
               <TableHead>Brand Name</TableHead>
-              <TableHead>Action</TableHead>
+              <TableHead>Update At</TableHead>
+              <TableHead>Created At</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
-            {brands.map((brand, index) => (
-              <TableRow key={brand.id}>
-                <TableCell className="font-medium">{index + 1}</TableCell>
-                <TableCell>{brand.name}</TableCell>
-                <TableCell className="flex gap-x-2">
-                  <Button variant="secondary">Edit</Button>
-                  <Button variant="destructive">Delete</Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table> */}
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>ID</TableHead>
-              <TableHead>Title</TableHead>
-              <TableHead>Content</TableHead>
-              <TableHead>Author</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Category</TableHead>
-            </TableRow>
-          </TableHeader>
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<h1>Loading...</h1>}>
             <TableBody>
-              {blogs.map((blog, index) => (
-                <TableRow key={blog.id}>
+              {brands.map((brand, index) => (
+                <TableRow key={brand._id}>
                   <TableCell className="font-medium">{index + 1}</TableCell>
-                  <TableCell>{blog.title}</TableCell>
-                  <TableCell>{blog.content}</TableCell>
-                  <TableCell>{blog.author}</TableCell>
-                  <TableCell>{blog.date}</TableCell>
-                  <TableCell>{blog.category}</TableCell>
+                  <TableCell>{brand.name}</TableCell>
+                  <TableCell>{Tanggal(brand.createdAt) }</TableCell>
+                  <TableCell>{Tanggal(brand.updatedAt) }</TableCell>
                 </TableRow>
               ))}
             </TableBody>
