@@ -5,7 +5,6 @@ import Navbar from "@/components/navbar/navbar";
 import Footer from "@/components/footer/footer";
 
 
-
 export const metadata: Metadata = {
   title: "Olshop",
   description: "Online Shop",
@@ -16,6 +15,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+
   return (
     <html lang="en">
       <body>

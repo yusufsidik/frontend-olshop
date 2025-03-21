@@ -3,11 +3,14 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 
 import { Plus } from 'lucide-react';
 import { Suspense } from "react";
-import axios from 'axios'
+import axios from "axios";
+
 import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 interface Subcategories {
   _id: string;
@@ -29,11 +32,15 @@ interface AllCategories {
 
 export default async function Category() {
 
-  const endpointSubcategoryWithCategory = await axios.get('http://localhost:8000/category/subcategory-with-category')
-  const subcategories : Subcategories[] = await endpointSubcategoryWithCategory.data.data
 
-  const endpointAllCategory = await axios.get('http://localhost:8000/category')
-  const categories : AllCategories[] = await endpointAllCategory.data.data
+  const [subcategoryWithCategory, allCategory] = await Promise.all([
+    axios.get('http://localhost:8000/category/subcategory-with-category'),
+    axios.get('http://localhost:8000/category'),
+  ]).then(([res1, res2]) => [res1.data.data, res2.data.data]);
+
+  const subcategories : Subcategories[] = subcategoryWithCategory
+  const categories : AllCategories[] = allCategory
+
 
   return (
     <>
@@ -57,18 +64,14 @@ export default async function Category() {
                 {subcategories.map((category, index) => (
                   <TableRow key={category._id}>
                     <TableCell className="font-medium">{index + 1}</TableCell>
-                    <TableCell>{category.name}</TableCell>
-                    <TableCell>{category.subcategories.map((subcat, index) => <p key={index}>{subcat}</p>)}</TableCell>
+                    <TableCell className="font-medium">{category.name}</TableCell>
+                    <TableCell>{category.subcategories.map((subcat, index) => <Badge variant="default" key={index} className="block mb-1">{subcat}</Badge>)}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Suspense>
           </Table>
         </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline">Previous</Button>
-          <Button variant="outline">Next</Button>
-        </CardFooter>
       </Card>
 
       {/* all categories */}
@@ -78,7 +81,7 @@ export default async function Category() {
             <div>
               <CardTitle>List of Category</CardTitle>
               <CardDescription>You have Description</CardDescription>
-              <i className="font-bold">*Text green means parent category</i>
+              <i className="font-bold text-sm">*Text green means parent category</i>
             </div>
             <Button variant="default" className="cursor-pointer">
               <Plus className="h-12 w-12" />
@@ -99,11 +102,11 @@ export default async function Category() {
               <TableBody>
                 {categories.map((category, index) => (
                   <TableRow key={category._id}>
-                    <TableCell className="font-medium">{index + 1}</TableCell>
+                    <TableCell>{index + 1}</TableCell>
                     <TableCell className={cn("font-medium", {
                       "text-green-700": category.parentCategory === null
                     })}>{category.name}</TableCell>
-                    <TableCell>{category.parentCategory?.name}</TableCell>
+                    <TableCell>{category.parentCategory === null ? "-" : <Badge>{category.parentCategory?.name}</Badge>} </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
