@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 
-import { Heading1, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 
 import { Suspense } from "react";
 
@@ -15,17 +15,6 @@ interface Brand {
   createdAt: string
   updatedAt: string
 }
-
-function tanggal(date: string) {
-  const tanggal = new Date(date).toLocaleString('id-ID', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',  
-  }).toString().split('/').reverse().join('-');
-  return tanggal
-}
-
-
 export default async function Brand() {
 
   const data = await axios.get('http://localhost:8000/brand')
@@ -50,6 +39,7 @@ export default async function Brand() {
           <TableHeader>
             <TableRow>
               <TableHead>No</TableHead>
+
               <TableHead>Brand Name</TableHead>
               <TableHead>Update At</TableHead>
               <TableHead>Created At</TableHead>
@@ -67,7 +57,7 @@ export default async function Brand() {
               ))}
             </TableBody>
           </Suspense>
-        </Table>
+        </Table> 
       </CardContent>
       <CardFooter className="flex justify-between">
         <Button variant="outline">Previous</Button>
