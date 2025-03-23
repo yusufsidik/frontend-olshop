@@ -2,15 +2,14 @@
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 
-import { Plus } from 'lucide-react';
 import { Suspense } from "react";
-import axios from "axios";
-
-import { cn } from "@/lib/utils";
-import { useState } from "react";
+import {getSubCategoriesWithCategories} from '@/server/category'
+import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 
 interface Subcategories {
   _id: string;
@@ -18,37 +17,40 @@ interface Subcategories {
   subcategories: string[];
 }
 
-interface AllCategories {
-  _id: string;
-  name: string;
-  parentCategory?: {
-    _id: string;
-    name: string;
-    parentCategory: string;
-  }
-  createdAt: string;
-  updatedAt: string;
-}
 
-export default async function Category() {
+export default function Category() {
 
+  const { isPending, error, data } = useQuery<Subcategories[]>({
+    queryKey: ['subcategories'],
+    queryFn: getSubCategoriesWithCategories
+  })
 
-  const [subcategoryWithCategory, allCategory] = await Promise.all([
-    axios.get('http://localhost:8000/category/subcategory-with-category'),
-    axios.get('http://localhost:8000/category'),
-  ]).then(([res1, res2]) => [res1.data.data, res2.data.data]);
+  if (isPending) return (<h1>Loading..</h1>)
 
-  const subcategories : Subcategories[] = subcategoryWithCategory
-  const categories : AllCategories[] = allCategory
-
+  if (error) return 'An error has occurred: ' + error.message
 
   return (
     <>
       {/* subcategories */}
       <Card className="lg:col-span-4">
         <CardHeader>
-          <CardTitle>List of Category With Sub Category</CardTitle>
-          <CardDescription>You have Description</CardDescription>
+          <div className="flex justify-between">
+            <div>
+              <CardTitle>List of Category With Sub Category</CardTitle>
+              <CardDescription>You have Description</CardDescription>
+            </div>
+            <div>
+              <Button variant="outline" className="mr-2">
+                <Link href="/admin/category/all-category" >All Category</Link>
+              </Button>
+              <Button variant="default" className="cursor-pointer" asChild>
+                <Link href="/admin/category/create">
+                  <Plus className="h-12 w-12" />
+                  Add New Category
+                </Link>
+              </Button>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           <Table>
@@ -61,7 +63,7 @@ export default async function Category() {
             </TableHeader>
             <Suspense fallback={<div>Loading...</div>}>
               <TableBody>
-                {subcategories.map((category, index) => (
+                {data?.map((category, index) => (
                   <TableRow key={category._id}>
                     <TableCell className="font-medium">{index + 1}</TableCell>
                     <TableCell className="font-medium">{category.name}</TableCell>
@@ -71,52 +73,10 @@ export default async function Category() {
               </TableBody>
             </Suspense>
           </Table>
+          <CardFooter>
+            
+          </CardFooter>
         </CardContent>
-      </Card>
-
-      {/* all categories */}
-      <Card className="lg:col-span-4 mt-8">
-        <CardHeader>
-          <div className="flex justify-between">
-            <div>
-              <CardTitle>List of Category</CardTitle>
-              <CardDescription>You have Description</CardDescription>
-              <i className="font-bold text-sm">*Text green means parent category</i>
-            </div>
-            <Button variant="default" className="cursor-pointer">
-              <Plus className="h-12 w-12" />
-              Add Brand
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow className="font-bold">
-                <TableHead>No</TableHead>
-                <TableHead>Categories</TableHead>
-                <TableHead>Parent Category</TableHead>
-              </TableRow>
-            </TableHeader>
-            <Suspense fallback={<div>Loading...</div>}>
-              <TableBody>
-                {categories.map((category, index) => (
-                  <TableRow key={category._id}>
-                    <TableCell>{index + 1}</TableCell>
-                    <TableCell className={cn("font-medium", {
-                      "text-green-700": category.parentCategory === null
-                    })}>{category.name}</TableCell>
-                    <TableCell>{category.parentCategory === null ? "-" : <Badge>{category.parentCategory?.name}</Badge>} </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Suspense>
-          </Table>
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline">Previous</Button>
-          <Button variant="outline">Next</Button>
-        </CardFooter>
       </Card>
     </>
   )

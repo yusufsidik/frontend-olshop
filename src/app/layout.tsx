@@ -3,6 +3,7 @@ import "./globals.css";
 
 import Navbar from "@/components/navbar/navbar";
 import Footer from "@/components/footer/footer";
+import { TanstackProvider } from "@/components/providers/tanstack-provider";
 
 
 export const metadata: Metadata = {
@@ -20,11 +21,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Navbar />
-          <main>
-            {children}
-          </main>
-        <Footer />
+        <TanstackProvider>
+          <Navbar />
+            <main>
+              {children}
+            </main>
+          <Footer />
+        </TanstackProvider>
       </body>
     </html>
   );
