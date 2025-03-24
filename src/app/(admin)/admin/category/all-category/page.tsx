@@ -43,17 +43,8 @@ export default function AllCategory() {
       {/* all categories */}
       <Card className="lg:col-span-4 mt-8">
         <CardHeader>
-          <div className="flex justify-between">
-            <div>
-              <CardTitle>List of Category</CardTitle>
-              <CardDescription>You have Description</CardDescription>
-              <i className="font-bold text-sm">*Text green means parent category</i>
-            </div>
-            <Button variant="default" className="cursor-pointer">
-              <Plus className="h-12 w-12" />
-              Add New Category
-            </Button>
-          </div>
+          <CardTitle>List of Category</CardTitle>
+          <CardDescription>You have Description</CardDescription>
         </CardHeader>
         <CardContent>
           <Table>

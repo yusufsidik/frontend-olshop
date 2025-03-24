@@ -21,13 +21,15 @@ import {
 
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { toast } from "sonner"
 
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { getCategories } from "@/server/category";
-import Category from "../page"
+import axios from "axios"
+import { redirect } from 'next/navigation'
 
 interface AllCategories {
   _id: string;
@@ -64,10 +66,22 @@ export default function CreateCategory() {
     },
   })
 
+  const mutation = useMutation({
+    mutationFn: (formData: z.infer<typeof formSchema>) => {
+      return axios.post("http://localhost:8000/category", formData);  
+    },
+    onError: (error) => {
+      console.log("Error mutation",error)
+      toast.error("Error creating category");
+    },
+    onSuccess: (data) => {
+      toast.success("Category created successfully");
+      redirect("/admin/category/all-category")
+    },
+  })
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
+    mutation.mutate(values);
   }
   
 
@@ -83,7 +97,7 @@ export default function CreateCategory() {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8" id="categoryForm">
             <FormField
               control={form.control}
               name="name"
@@ -91,7 +105,7 @@ export default function CreateCategory() {
                 <FormItem>
                   <FormLabel>Name Category</FormLabel>
                   <FormControl>
-                    <Input placeholder="shadcn" {...field} />
+                    <Input placeholder="Input Category" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -103,22 +117,24 @@ export default function CreateCategory() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Parent Category</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="max-w-[580px] w-full">
-                          <SelectValue placeholder="Select Parent Category" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {
-                          categories?.map((category, index) => {
-                            return (
-                              <SelectItem key={index} value={category._id}>{category.name}</SelectItem>
-                            )
-                          })
-                        }
-                      </SelectContent>
-                    </Select>
+                  <Select 
+                    onValueChange={field.onChange} 
+                    value={field.value || undefined} 
+                    defaultValue=""
+                  >
+                    <FormControl>
+                      <SelectTrigger className="max-w-[580px] w-full">
+                        <SelectValue placeholder="Select Parent Category" ref={field.ref}/>
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent >
+                      {categories?.map((category, index) => (
+                        <SelectItem key={index} value={category._id}>
+                          {category.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

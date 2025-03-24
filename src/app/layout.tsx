@@ -4,7 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/navbar/navbar";
 import Footer from "@/components/footer/footer";
 import { TanstackProvider } from "@/components/providers/tanstack-provider";
-
+import { Toaster } from "@/components/ui/sonner"
 
 export const metadata: Metadata = {
   title: "Olshop",
@@ -24,6 +24,7 @@ export default function RootLayout({
         <TanstackProvider>
           <Navbar />
             <main>
+              <Toaster />
               {children}
             </main>
           <Footer />
