@@ -2,16 +2,18 @@
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
-import { Plus } from 'lucide-react';
 import { Suspense } from "react";
 import { cn } from "@/lib/utils";
 
 import { getCategories } from "@/server/category";
 import { useQuery } from "@tanstack/react-query";
 
+import { useRouter } from "next/navigation"
+import EditCategory from "./edit"
 
 interface AllCategories {
   _id: string;
@@ -28,6 +30,7 @@ interface AllCategories {
 
 export default function AllCategory() {
 
+  const router = useRouter()
 
   const { isPending, error, data } = useQuery<AllCategories[]>({
     queryKey: ['categories'],
@@ -53,6 +56,7 @@ export default function AllCategory() {
                 <TableHead>No</TableHead>
                 <TableHead>Categories</TableHead>
                 <TableHead>Parent Category</TableHead>
+                <TableHead>Action</TableHead>
               </TableRow>
             </TableHeader>
             <Suspense fallback={<div>Loading...</div>}>
@@ -64,6 +68,12 @@ export default function AllCategory() {
                       "text-green-700": category.parentCategory === null
                     })}>{category.name}</TableCell>
                     <TableCell>{category.parentCategory === null ? "-" : <Badge>{category.parentCategory?.name}</Badge>} </TableCell>
+                    <TableCell>
+                    
+                      <EditCategory dataCategory={category} />
+                      
+                      <Button variant="destructive">Delete</Button>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -74,6 +84,7 @@ export default function AllCategory() {
           <Button variant="outline">Previous</Button>
           <Button variant="outline">Next</Button>
         </CardFooter>
+        
       </Card>
     </>
   )
