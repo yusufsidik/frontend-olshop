@@ -12,8 +12,13 @@ import { cn } from "@/lib/utils";
 import { getCategories } from "@/server/category";
 import { useQuery } from "@tanstack/react-query";
 
+<<<<<<< HEAD
 import { useRouter } from "next/navigation"
 import EditCategory from "./edit"
+=======
+import EditCategory from "../all-category/edit"
+
+>>>>>>> 025aa67392cf0445572faeb98a3526f3ac231a70
 
 interface AllCategories {
   _id: string;
@@ -69,10 +74,14 @@ export default function AllCategory() {
                     })}>{category.name}</TableCell>
                     <TableCell>{category.parentCategory === null ? "-" : <Badge>{category.parentCategory?.name}</Badge>} </TableCell>
                     <TableCell>
+<<<<<<< HEAD
                     
                       <EditCategory dataCategory={category} />
                       
                       <Button variant="destructive">Delete</Button>
+=======
+                      <EditCategory category={category} />
+>>>>>>> 025aa67392cf0445572faeb98a3526f3ac231a70
                     </TableCell>
                   </TableRow>
                 ))}
