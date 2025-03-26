@@ -12,6 +12,8 @@ import { cn } from "@/lib/utils";
 import { getCategories } from "@/server/category";
 import { useQuery } from "@tanstack/react-query";
 
+import EditCategory from "../all-category/edit"
+
 
 interface AllCategories {
   _id: string;
@@ -53,6 +55,7 @@ export default function AllCategory() {
                 <TableHead>No</TableHead>
                 <TableHead>Categories</TableHead>
                 <TableHead>Parent Category</TableHead>
+                <TableHead>Action</TableHead>
               </TableRow>
             </TableHeader>
             <Suspense fallback={<div>Loading...</div>}>
@@ -64,6 +67,9 @@ export default function AllCategory() {
                       "text-green-700": category.parentCategory === null
                     })}>{category.name}</TableCell>
                     <TableCell>{category.parentCategory === null ? "-" : <Badge>{category.parentCategory?.name}</Badge>} </TableCell>
+                    <TableCell>
+                      <EditCategory category={category} />
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
