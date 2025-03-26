@@ -36,7 +36,7 @@ import { useForm } from "react-hook-form"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { getCategories } from "@/server/category";
 import axios from "axios"
-import { redirect } from 'next/navigation'
+import { useRouter } from "next/navigation"
 
 interface AllCategories {
   _id: string;
@@ -77,23 +77,23 @@ export default function EditCategory(props:any) {
     },
   })
 
+  const router = useRouter();
+
   const mutation = useMutation({
-    // mutationFn: (formData: z.infer<typeof formSchema>) => {
-    //   return axios.post("http://localhost:8000/category", formData);  
-    // },
-    // onError: (error) => {
-    //   console.log("Error mutation",error)
-    //   toast.error("Error creating category");
-    // },
-    // onSuccess: (data) => {
-    //   toast.success("Category created successfully");
-    //   redirect("/admin/category/all-category")
-    // },
+    mutationFn: (formData: z.infer<typeof formSchema>) => {
+      return axios.put("http://localhost:8000/category", formData);  
+    },
+    onError: (error) => {
+      toast.error("Error creating category");
+    },
+    onSuccess: (data) => {
+      toast.success("Success update category");
+      router.push("/admin/category");
+    },
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // mutation.mutate(values);
-    console.log(values)
+    mutation.mutate(values);
   }
 
 

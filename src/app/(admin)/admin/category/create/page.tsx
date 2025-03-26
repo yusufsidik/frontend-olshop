@@ -80,7 +80,7 @@ export default function CreateCategory() {
     },
     onSuccess: () => {
       toast.success("Category created successfully");
-      router.push("/admin/category");
+      router.push("/admin/category/all-category");
     }
   })
 
