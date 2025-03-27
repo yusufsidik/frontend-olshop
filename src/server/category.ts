@@ -11,11 +11,6 @@ export const getSubCategoriesWithCategories = async () => {
   return res.data;
 };
 
-export const postCategory = async (param: string) => {
-  console.log(param)
-  // const mutation = useMutation({
-  //   mutationFn: (newTodo) => {
-  //     return axios.post('/todos', newTodo)
-  //   },
-  // })
+export const deleteCategory = async (param: string) => {
+  await axios.delete(`http://localhost:8000/category/${param}`);
 }

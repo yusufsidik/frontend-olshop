@@ -3,7 +3,6 @@
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -19,7 +18,6 @@ import {
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -60,7 +58,6 @@ export default function EditCategory(props:any) {
 
   const dataCategory = props.category
 
-  
   const { data } = useQuery<AllCategories[]>({
     queryKey: ['categories'],
     queryFn: getCategories
@@ -96,19 +93,14 @@ export default function EditCategory(props:any) {
     mutation.mutate(values);
   }
 
-
   return (
     <Dialog>
       <DialogTrigger>
-        <Button variant="default" asChild><span>Edit</span></Button>
+        <Button variant="default" asChild className="cursor-pointer"><span>Edit</span></Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Are you absolutely sure?</DialogTitle>
-          <DialogDescription>
-            This action cannot be undone. This will permanently delete your account
-            and remove your data from our servers.
-          </DialogDescription>
+          <DialogTitle>{dataCategory.name}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8" id="categoryForm">

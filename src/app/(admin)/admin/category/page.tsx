@@ -4,9 +4,11 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner"
 import { Plus } from "lucide-react";
+import { Loader2 } from "lucide-react"
 
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import {getSubCategoriesWithCategories} from '@/server/category'
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
@@ -20,37 +22,35 @@ interface Subcategories {
 
 export default function Category() {
 
+  const [loading, setLoading] = useState<boolean>(false)
   const { isPending, error, data } = useQuery<Subcategories[]>({
     queryKey: ['subcategories'],
     queryFn: getSubCategoriesWithCategories
   })
 
-  if (isPending) return (<h1>Loading..</h1>)
+  if (isPending) return (toast.loading("Loading..."))
 
   if (error) return 'An error has occurred: ' + error.message
 
   return (
     <>
-      {/* subcategories */}
       <Card className="lg:col-span-4">
         <CardHeader>
-          <div className="flex justify-between">
-            <div>
-              <CardTitle>List of Category With Sub Category</CardTitle>
-              <CardDescription>You have Description</CardDescription>
-            </div>
-            <div>
-              <Button variant="outline" className="mr-2">
-                <Link href="/admin/category/all-category" >All Category</Link>
-              </Button>
-              <Button variant="default" className="cursor-pointer" asChild>
-                <Link href="/admin/category/create">
-                  <Plus className="h-12 w-12" />
-                  Add New Category
-                </Link>
-              </Button>
-            </div>
-          </div>
+          <CardTitle>List of Category With Sub Category</CardTitle>
+          <div className="flex justify-end">
+            <Button variant="outline" className="mr-2" asChild>
+              <Link href="/admin/category/all-category" onClick={() => setLoading(true)}>
+                {loading ? <Loader2 className="animate-spin" /> : null}
+                All Category
+              </Link>
+            </Button>
+            <Button variant="default" className="cursor-pointer" asChild>
+              <Link href="/admin/category/create" onClick={() => setLoading(true)}>
+                {loading ? <Loader2 className="animate-spin" /> : <Plus className="h-12 w-12" />}
+                Add New Category
+              </Link>
+            </Button>
+        </div>
         </CardHeader>
         <CardContent>
           <Table>
@@ -61,7 +61,7 @@ export default function Category() {
                 <TableHead>Sub Category</TableHead>
               </TableRow>
             </TableHeader>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<h1><Loader2 className="animate-spin" /> Loading...</h1>}>
               <TableBody>
                 {data?.map((category, index) => (
                   <TableRow key={category._id}>

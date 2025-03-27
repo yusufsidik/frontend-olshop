@@ -12,9 +12,8 @@ import { cn } from "@/lib/utils";
 import { getCategories } from "@/server/category";
 import { useQuery } from "@tanstack/react-query";
 
-import EditCategory from "../all-category/edit"
-import { useRouter } from "next/navigation"
-
+import EditCategory from "@/app/(admin)/admin/category/all-category/edit"
+import DeleteCategory from "@/app/(admin)/admin/category/all-category/delete"
 
 interface AllCategories {
   _id: string;
@@ -23,15 +22,12 @@ interface AllCategories {
     _id: string;
     name: string;
     parentCategory: string;
-  }
+  } | null;
   createdAt: string;
   updatedAt: string;
 }
 
-
 export default function AllCategory() {
-
-  const router = useRouter()
 
   const { isPending, error, data } = useQuery<AllCategories[]>({
     queryKey: ['categories'],
@@ -48,7 +44,6 @@ export default function AllCategory() {
       <Card className="lg:col-span-4 mt-8">
         <CardHeader>
           <CardTitle>List of Category</CardTitle>
-          <CardDescription>You have Description</CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
@@ -69,8 +64,9 @@ export default function AllCategory() {
                       "text-green-700": category.parentCategory === null
                     })}>{category.name}</TableCell>
                     <TableCell>{category.parentCategory === null ? "-" : <Badge>{category.parentCategory?.name}</Badge>} </TableCell>
-                    <TableCell>
+                    <TableCell className="flex gap-3">
                       <EditCategory category={category} />
+                      <DeleteCategory category={category} />
                     </TableCell>
                   </TableRow>
                 ))}
@@ -82,7 +78,6 @@ export default function AllCategory() {
           <Button variant="outline">Previous</Button>
           <Button variant="outline">Next</Button>
         </CardFooter>
-        
       </Card>
     </>
   )
